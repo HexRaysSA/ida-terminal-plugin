@@ -1,3 +1,5 @@
+⚠️This is a very preliminary version ... comments & suggestions are more than welcome. 
+
 # 🖥️ Terminal Plugin for IDA Pro
 
 A lightweight terminal integration for [IDA Pro](https://hex-rays.com/ida-pro/) that lets you open a fully functional terminal within the IDA GUI.  
