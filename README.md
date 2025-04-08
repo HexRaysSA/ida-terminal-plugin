@@ -32,9 +32,8 @@ The terminal window is powered by [termqt](https://github.com/TerryGeng/termqt),
 
 ## 📁 Installation
 
-1. Clone this repo or download the plugin binary.
-2. Place the plugin in your IDA `plugins/` directory.
-3. Restart IDA Pro.
+1. Clone this repo in your IDA `plugins/` directory.
+2. Restart IDA Pro.
 
 ---
 
