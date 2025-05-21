@@ -1,19 +1,22 @@
-import ida_idaapi
-import ida_auto
-import ida_loader
-import ida_kernwin
-import platform
-from termqt import Terminal
+import importlib.util
 import logging
-
 import os
+import platform
+
+import ida_auto
+import ida_idaapi
+import ida_kernwin
+import ida_loader
 from PyQt5 import QtWidgets, QtGui, QtCore, sip
+
+from termqt import Terminal
 
 dependencies_loaded = True
 failed_dependency = []
 
 
 class TerminalPlugin(ida_idaapi.plugin_t):
+    config = {}
     flags = ida_idaapi.PLUGIN_FIX
     comment = "Terminal Plugin"
     help = "Terminal"
@@ -22,6 +25,8 @@ class TerminalPlugin(ida_idaapi.plugin_t):
 
     def __init__(self):
         super().__init__()
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        self.config = load_config_dict(os.path.join(script_dir, "config.py"))
         self.view = None
 
     def init(self):
@@ -29,7 +34,7 @@ class TerminalPlugin(ida_idaapi.plugin_t):
 
     def run(self, arg):
         try:
-            self.view = TerminalView()
+            self.view = TerminalView(self.config)
         except Exception as e:
             ida_kernwin.msg(f"Terminal, exception {e} trying to run plugin.")
 
@@ -52,10 +57,12 @@ def PLUGIN_ENTRY():
 
 class TerminalView(QtWidgets.QWidget):
     WINDOW_TITLE = "Terminal"
+    config = {}
 
-    def __init__(self):
+    def __init__(self, config):
         super(TerminalView, self).__init__()
         self.visible = False
+        self.config = config
 
         self._ui_init_widget()
         self._ui_layout()
@@ -70,7 +77,7 @@ class TerminalView(QtWidgets.QWidget):
         ida_kernwin.set_dock_pos(self.WINDOW_TITLE, "Output", ida_kernwin.DP_TAB)
 
     def refresh(self):
-        print("refresh")
+        pass
 
     def _cleanup(self):
         self.visible = False
@@ -101,7 +108,8 @@ class TerminalView(QtWidgets.QWidget):
 
     def _ui_layout(self):
         logger = logging.getLogger()
-        logger.setLevel(logging.DEBUG)
+        # make this configurable
+        logger.setLevel(logging.ERROR)
         handler = logging.StreamHandler()
         formatter = logging.Formatter("[%(asctime)s] > " "[%(filename)s:%(lineno)d] %(message)s")
         handler.setFormatter(formatter)
@@ -128,14 +136,16 @@ class TerminalView(QtWidgets.QWidget):
         pl = platform.system()
 
         if pl in ["Linux", "Darwin"]:
-            bin = os.getenv('SHELL') or "/bin/bash"
+            bin = self.config["CMD"] or os.getenv('SHELL')
+            work_dir = self.config["WORK_DIR"] or os.getenv('HOME')
 
             from termqt import TerminalPOSIXExecIO
             terminal_io = TerminalPOSIXExecIO(
                 terminal.row_len,
                 terminal.col_len,
                 bin,
-                logger=logger
+                logger=logger,
+                work_dir=work_dir
             )
         elif pl == "Windows":
             bin = "cmd"
@@ -161,3 +171,27 @@ class TerminalView(QtWidgets.QWidget):
             terminal.stdin_callback = terminal_io.write
             terminal.resize_callback = terminal_io.resize
             terminal_io.spawn()
+
+
+def load_config_dict(filepath: str) -> dict:
+    config = {
+        "CMD": None,
+        "WORK_DIR": None,
+    }
+
+    if not os.path.exists(filepath):
+        return config  # empty dict
+
+    spec = importlib.util.spec_from_file_location("config_module", filepath)
+    module = importlib.util.module_from_spec(spec)
+
+    try:
+        spec.loader.exec_module(module)
+        for key in dir(module):
+            if not key.startswith("_"):
+                config[key] = getattr(module, key)
+    except Exception as e:
+        print(f"Warning: Failed to load config from {filepath}: {e}")
+
+    print (config)
+    return config

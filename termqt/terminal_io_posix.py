@@ -7,6 +7,7 @@ import logging
 import threading
 from abc import ABC, abstractmethod
 from .terminal_io import TerminalIO
+from pathlib import Path
 
 
 class TerminalPOSIXIO(TerminalIO, ABC):
@@ -169,7 +170,7 @@ class TerminalPOSIXIO(TerminalIO, ABC):
 
 
 class TerminalPOSIXExecIO(TerminalPOSIXIO):
-    def __init__(self, cols: int, rows: int, cmd: str, env=None, logger=None):
+    def __init__(self, cols: int, rows: int, cmd: str, env=None, logger=None, work_dir=None):
         # Initilize.
         #
         # args: cols: columns
@@ -179,6 +180,7 @@ class TerminalPOSIXExecIO(TerminalPOSIXIO):
         super().__init__(cols, rows, logger)
         self.cmd = cmd
         self.env = env if env else os.environ
+        self.work_dir = work_dir or Path.home()
 
     def run_slave(self):
         import shlex
@@ -192,4 +194,5 @@ class TerminalPOSIXExecIO(TerminalPOSIXIO):
         env["LC_CTYPE"] = 'en_US.UTF-8'
         env["PYTHONIOENCODING"] = "utf_8"
 
+        os.chdir(self.work_dir)
         os.execvpe(cmd[0], cmd, self.env)
