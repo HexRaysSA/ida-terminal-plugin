@@ -22,6 +22,10 @@ Once the plugin is installed:
 - Press `Ctrl+Shift+T` to toggle the terminal window inside IDA Pro.
 - Run shell commands as you would in a regular terminal.
 
+## ⚙️ Configuration
+
+Rename config.example.py to config.py to customize the behaviour.
+
 ---
 
 ## 🔗 Credits
