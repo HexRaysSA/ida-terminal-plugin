@@ -22,22 +22,16 @@ Once the plugin is installed:
 - Press `Ctrl+Shift+T` to toggle the terminal window inside IDA Pro.
 - Run shell commands as you would in a regular terminal.
 
-## ⚙️ Configuration
-
-Rename config.example.py to config.py to customize the behaviour.
-
----
-
-## 🔗 Credits
-
-The terminal window is powered by [termqt](https://github.com/TerryGeng/termqt), a Qt-based terminal emulator.
-
 ---
 
 ## 📁 Installation
 
-1. Clone this repo in your IDA `plugins/` directory.
+1. Clone this repo in your IDA `$HOME/.idapro/plugins/` directory.
 2. Restart IDA Pro.
+
+## ⚙️ Configuration
+
+Rename config.example.py to config.py to customize the behaviour.
 
 ---
 
@@ -51,6 +45,12 @@ Currently only works on
 ## 🧩 Compatibility
 
 - Tested with IDA Pro 9.1+ on **MacOS**
+
+---
+
+## 🔗 Credits
+
+The terminal window is powered by [termqt](https://github.com/TerryGeng/termqt), a Qt-based terminal emulator.
 
 ---
 
