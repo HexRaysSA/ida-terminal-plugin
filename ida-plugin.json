@@ -6,6 +6,7 @@
     "version": "0.0.1",
     "categories": ["disassembly-and-processor-modules", "decompilation", "debugging-and-tracing"],
     "idaVersions": ">=9.0",
-    "description": "A lightweight terminal integration for IDA Pro that lets you open a fully functional terminal within the IDA GUI.\nQuickly access shell commands, scripts, or tooling without leaving your reversing environment."
+    "description": "A lightweight terminal integration for IDA Pro that lets you open a fully functional terminal within the IDA GUI.\nQuickly access shell commands, scripts, or tooling without leaving your reversing environment.",
+    "logoPath": "logo.png"
   }
 }
