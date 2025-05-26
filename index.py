@@ -193,5 +193,4 @@ def load_config_dict(filepath: str) -> dict:
     except Exception as e:
         print(f"Warning: Failed to load config from {filepath}: {e}")
 
-    print (config)
     return config
