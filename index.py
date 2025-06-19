@@ -79,8 +79,6 @@ class TerminalView(QtWidgets.QWidget):
         # set focus to the terminal widget
         if hasattr(self, 'terminal'):
             self.terminal.setFocus()
-            # explicitly start cursor blinking
-            self.terminal._switch_cursor_blink(True)
 
     def refresh(self):
         pass

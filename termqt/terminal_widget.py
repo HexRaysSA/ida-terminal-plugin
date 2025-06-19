@@ -57,6 +57,7 @@ class Terminal(TerminalBuffer, QWidget):
 
         QWidget.__init__(self)
 
+        self._widget_shown = False
         self.scroll_bar: QScrollBar = None
 
         self.logger = logger if logger else logging.getLogger()
@@ -108,7 +109,6 @@ class Terminal(TerminalBuffer, QWidget):
         self._cursor_blinking_elapse = 0
         self._cursor_blinking_timer = QTimer()
         self._cursor_blinking_timer.timeout.connect(self._blink_cursor)
-        self._switch_cursor_blink(state=CursorState.ON, blink=True)
 
         # scroll bar
 
@@ -513,6 +513,9 @@ class Terminal(TerminalBuffer, QWidget):
     # ==========================
 
     def _blink_cursor(self):
+        if not self._widget_shown:
+            return
+
         self._cursor_blinking_lock.lock()
 
         if self._cursor_blinking_state == CursorState.ON:  # On
@@ -682,6 +685,11 @@ class Terminal(TerminalBuffer, QWidget):
 
     def showEvent(self, event):
         super().showEvent(event)
+
+        self._widget_shown = True
+        # Start cursor blinking only when widget is actually shown
+        if not self._cursor_blinking_timer.isActive():
+            self._switch_cursor_blink(state=CursorState.ON, blink=True)
 
         def resize(*args):
             self.resize(self.size().width(), self.size().height())
