@@ -115,6 +115,7 @@ class Terminal(TerminalBuffer, QWidget):
         self.update_scroll_sig.connect(self._update_scroll_position)
 
         self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusProxy(None) # Don't let IDA redirect focus
 
         # terminal options, in case you don't want pty to handle it
         # self.echo = True
@@ -620,6 +621,8 @@ class Terminal(TerminalBuffer, QWidget):
                     self.input(ControlChar.BS.value)
                 elif key == Qt.Key_Escape:
                     self.input(ControlChar.ESC.value)
+                elif key == Qt.Key_Tab:
+                    self.input(ControlChar.TAB.value)
                 else:
                     break  # avoid the execution of 'return'
                 return
@@ -682,6 +685,16 @@ class Terminal(TerminalBuffer, QWidget):
 
         if text:
             self.input(text.encode('utf-8'))
+
+    def event(self, event):
+        # Intercept Tab key before IDA's focus management
+        if event.type() == event.KeyPress and event.key() == Qt.Key_Tab:
+            self.input(ControlChar.TAB.value)
+            return True  # Event handled, don't propagate
+        if event.type() == event.KeyPress and event.key() == Qt.Key_Question:
+            self.input('?')
+            return True  # Event handled, don't propagate
+        return super().event(event)
 
     def showEvent(self, event):
         super().showEvent(event)
