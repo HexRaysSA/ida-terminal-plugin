@@ -75,6 +75,12 @@ class TerminalView(QtWidgets.QWidget):
         # show the dockable widget
         ida_kernwin.display_widget(self._twidget, 0)
         ida_kernwin.set_dock_pos(self.WINDOW_TITLE, "Output", ida_kernwin.DP_TAB)
+        
+        # set focus to the terminal widget
+        if hasattr(self, 'terminal'):
+            self.terminal.setFocus()
+            # explicitly start cursor blinking
+            self.terminal._switch_cursor_blink(True)
 
     def refresh(self):
         pass
@@ -118,13 +124,13 @@ class TerminalView(QtWidgets.QWidget):
         main_layout = QtWidgets.QHBoxLayout()
         main_layout.setContentsMargins(1, 0, 0, 0)
 
-        terminal = Terminal(200, 200, logger=logger)
-        terminal.set_font()
-        terminal.maximum_line_history = 2000
-        scroll = QtWidgets.QScrollBar(QtCore.Qt.Vertical, terminal)
-        terminal.connect_scroll_bar(scroll)
+        self.terminal = Terminal(200, 200, logger=logger)
+        self.terminal.set_font()
+        self.terminal.maximum_line_history = 2000
+        scroll = QtWidgets.QScrollBar(QtCore.Qt.Vertical, self.terminal)
+        self.terminal.connect_scroll_bar(scroll)
 
-        main_layout.addWidget(terminal)
+        main_layout.addWidget(self.terminal)
         main_layout.addWidget(scroll)
         main_layout.setSpacing(0)
 
@@ -141,8 +147,8 @@ class TerminalView(QtWidgets.QWidget):
 
             from termqt import TerminalPOSIXExecIO
             terminal_io = TerminalPOSIXExecIO(
-                terminal.row_len,
-                terminal.col_len,
+                self.terminal.row_len,
+                self.terminal.col_len,
                 bin,
                 logger=logger,
                 work_dir=work_dir
@@ -152,8 +158,8 @@ class TerminalView(QtWidgets.QWidget):
 
             from termqt import TerminalWinptyIO
             terminal_io = TerminalWinptyIO(
-                terminal.row_len,
-                terminal.col_len,
+                self.terminal.row_len,
+                self.terminal.col_len,
                 bin,
                 logger=logger
             )
@@ -164,12 +170,12 @@ class TerminalView(QtWidgets.QWidget):
         else:
             logger.error(f"Platform not supported: {platform}")
 
-        terminal.enable_auto_wrap(auto_wrap_enabled)
+        self.terminal.enable_auto_wrap(auto_wrap_enabled)
 
         if terminal_io is not None:
-            terminal_io.stdout_callback = terminal.stdout
-            terminal.stdin_callback = terminal_io.write
-            terminal.resize_callback = terminal_io.resize
+            terminal_io.stdout_callback = self.terminal.stdout
+            self.terminal.stdin_callback = terminal_io.write
+            self.terminal.resize_callback = terminal_io.resize
             terminal_io.spawn()
 
 
