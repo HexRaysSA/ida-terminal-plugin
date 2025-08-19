@@ -5,6 +5,7 @@ from enum import Enum
 from PyQt5.QtWidgets import QSizePolicy, QWidget, QScrollBar, QMenu, QAction, QApplication
 from PyQt5.QtGui import QPainter, QColor, QPalette, QFontDatabase, QPen, QFont, QFontInfo, QFontMetrics, QPixmap
 from PyQt5.QtCore import Qt, QTimer, QMutex, pyqtSignal
+from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import QT_VERSION_STR
 
 from .terminal_buffer import Position, TerminalBuffer, DEFAULT_BG_COLOR, \
@@ -688,10 +689,10 @@ class Terminal(TerminalBuffer, QWidget):
 
     def event(self, event):
         # Intercept Tab key before IDA's focus management
-        if event.type() == event.KeyPress and event.key() == Qt.Key_Tab:
+        if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Tab:
             self.input(ControlChar.TAB.value)
             return True  # Event handled, don't propagate
-        if event.type() == event.KeyPress and event.key() == Qt.Key_Question:
+        if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Question:
             self.input('?')
             return True  # Event handled, don't propagate
         return super().event(event)
