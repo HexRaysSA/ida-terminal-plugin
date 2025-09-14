@@ -1,12 +1,28 @@
 {
   "IDAMetadataDescriptorVersion": 1,
   "plugin": {
-    "name": "IDA Terminal Plugin",
+    "name": "ida-terminal-plugin",
     "entryPoint": "index.py",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "categories": ["collaboration-and-productivity"],
     "idaVersions": ">=9.0",
     "description": "A lightweight terminal integration for IDA Pro that lets you open a fully functional terminal within the IDA GUI.\nQuickly access shell commands, scripts, or tooling without leaving your reversing environment.",
-    "logoPath": "ida-plugin.png"
+    "license": "MIT",
+    "logoPath": "ida-plugin.png",
+    "categories": [
+      "ui-ux-and-visualization"
+    ],
+    "pythonDependencies": [],
+    "urls": {
+      "repository": "https://github.com/williballenthin/idawilli"
+    },
+    "authors": [{
+      "name": "Pierre-Alexandre Losson",
+      "email": "palosson@hex-rays.com"
+    }],
+    "maintainers": [{
+      "name": "Willi Ballenthin",
+      "email": "wballenthin@hex-rays.com"
+    }]
   }
 }
