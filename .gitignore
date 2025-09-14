@@ -1,3 +1,4 @@
 .idea
 vendor
 config.py
+.claude/settings.local.json
