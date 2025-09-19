@@ -8,7 +8,7 @@
     "idaVersions": [
       "9.0",
       "9.1",
-      "9.2",
+      "9.2"
     ],
     "description": "A lightweight terminal integration for IDA Pro that lets you open a fully functional terminal within the IDA GUI.\nQuickly access shell commands, scripts, or tooling without leaving your reversing environment.",
     "license": "MIT",
