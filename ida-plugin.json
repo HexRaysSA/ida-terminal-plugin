@@ -3,7 +3,7 @@
   "plugin": {
     "name": "ida-terminal-plugin",
     "entryPoint": "index.py",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "categories": ["collaboration-and-productivity"],
     "idaVersions": [
       "9.0",
@@ -18,7 +18,7 @@
     ],
     "pythonDependencies": [],
     "urls": {
-      "repository": "https://github.com/williballenthin/idawilli"
+      "repository": "https://github.com/HexRaysSA/ida-terminal-plugin"
     },
     "authors": [{
       "name": "Pierre-Alexandre Losson",
