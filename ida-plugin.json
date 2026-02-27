@@ -21,7 +21,7 @@
       "repository": "https://github.com/HexRaysSA/ida-terminal-plugin"
     },
     "authors": [{
-      "name": "Hex-Rays SA",
+      "name": "Hex-Rays",
       "email": "plugins@hex-rays.com"
     }],
     "maintainers": [{
