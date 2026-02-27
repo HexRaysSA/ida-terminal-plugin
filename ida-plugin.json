@@ -21,8 +21,8 @@
       "repository": "https://github.com/HexRaysSA/ida-terminal-plugin"
     },
     "authors": [{
-      "name": "Pierre-Alexandre Losson",
-      "email": "palosson@hex-rays.com"
+      "name": "Hex-Rays SA",
+      "email": "plugins@hex-rays.com"
     }],
     "maintainers": [{
       "name": "Willi Ballenthin",
